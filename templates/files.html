@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if files %}
+    <ul>
+    {% for file in files %}
+        <li>{{ file.title }}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No files are available.</p>
+    {% endif %}
+
+{% endblock %}

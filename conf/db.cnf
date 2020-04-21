@@ -1,0 +1,5 @@
+[client]
+database = uploader
+user = uploader
+password = 12345
+default-character-set = utf8
