@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
 
 from .forms import UploadFileForm
@@ -14,17 +14,23 @@ def profile_details(request):
     })
 
 
+MAX_UPLOAD_SIZE = "5242880"
+
+
 @login_required
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            file = File(
+            file = form.cleaned_data.get('file')
+            if file.size > MAX_UPLOAD_SIZE:
+                return HttpResponseBadRequest
+            file_model = File(
                 title=form.cleaned_data.get('title'),
                 profile=request.user,
-                upload=form.cleaned_data.get('file')
+                upload=file
             )
-            file.save()
+            file_model.save()
             return HttpResponseRedirect('/all_files')
     else:
         form = UploadFileForm()
