@@ -9,5 +9,16 @@
         <li>Email: {{ profile.email }}</li>
     </ul>
 
+    <h3>My Files</h3>
+    {% if files %}
+    <ul>
+    {% for file in files %}
+        <li>{{ file.title }}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No files are available.</p>
+    {% endif %}
+
 {% endblock %}
 

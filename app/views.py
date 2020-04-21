@@ -8,7 +8,10 @@ from .models import File
 
 @login_required
 def profile_details(request):
-    return render(request, 'profile.html', {'profile': request.user})
+    files = File.objects.filter(profile=request.user)
+    return render(request, 'profile.html', {
+        'profile': request.user, 'files': files
+    })
 
 
 @login_required
@@ -22,13 +25,13 @@ def upload_file(request):
                 upload=form.cleaned_data.get('file')
             )
             file.save()
-            return HttpResponseRedirect('/my_files')
+            return HttpResponseRedirect('/all_files')
     else:
         form = UploadFileForm()
     return render(request, 'upload.html', {'form': form})
 
 
 @login_required
-def my_files(request):
-    files = File.objects.filter(profile=request.user)
+def all_files(request):
+    files = File.objects.all()
     return render(request, 'files.html', {'files': files})
