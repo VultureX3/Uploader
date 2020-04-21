@@ -23,7 +23,7 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data.get('file')
-            if file.size > MAX_UPLOAD_SIZE:
+            if file.size > int(MAX_UPLOAD_SIZE):
                 return HttpResponseBadRequest
             file_model = File(
                 title=form.cleaned_data.get('title'),
